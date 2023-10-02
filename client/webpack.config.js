@@ -20,6 +20,31 @@ module.exports = () => {
     plugins: [
       new HtmlWebpackPlugin({
         template: "./index.html",
+        title: "BDA Text Editor",
+      }),
+
+      new InjectManifest({
+        swSrc: "./src-sw.js",
+        swDest: "src-sw.js",
+      }),
+
+      new WebpackPwaManifest({
+        fingerprints: false,
+        inject: true,
+        name: 'BDA Text Editor',
+        short_name: 'Text Editor',
+        description: 'A simple text editor',
+        background_color: '#272822',
+        theme_color: '#31a9e1',
+        start_url: './',
+        publicPath: './',
+        icons: [
+          {
+            src: path.resolve('src/images/logo.png'),
+            sizes: [96, 128, 192, 256, 384, 512],
+            destination: path.join('assets', 'icons'),
+          },
+        ],
       }),
     ],
 
@@ -34,6 +59,10 @@ module.exports = () => {
             exclude: /node_modules/,
             use: {
               loader: "babel-loader",
+              options: {
+                presets: ['@babel/preset-env'],
+                plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime'],
+              },
             },   
         }
       ],
